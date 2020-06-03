@@ -4,8 +4,10 @@ import {
     Entity,
     JoinTable,
     OneToOne,
-    OneToMany
+    OneToMany,
+    BeforeInsert
 } from 'typeorm';
+import * as argon2 from 'argon2';
 import { IsEmail } from 'class-validator';
 
 @Entity('user')
@@ -29,4 +31,9 @@ export class UserEntity {
 
     @Column()
     password: string;
+
+    @BeforeInsert()
+    async hashPassword() {
+        this.password = await argon2.hash(this.password);
+    }
 }
