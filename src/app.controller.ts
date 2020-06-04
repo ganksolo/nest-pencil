@@ -1,10 +1,15 @@
 import { Controller, Get, Post, UseGuards, Request } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/guards/local-auth.guard';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { AuthService } from './auth/auth.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private authService: AuthService
+  ) {}
 
   @Get()
   getHello(): string {
@@ -13,9 +18,14 @@ export class AppController {
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
+  // 仅当用户通过验证后，才会调用路由处理程序
   async login(@Request() req) {
-    // 策略通过返回的user对象，赋值给了该对象Request的req.user
-    console.log(req.user)
-    return req.user;
+    return this.authService.login(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('auth')
+  async getApi(@Request() req) {
+    return req.user
   }
 }
