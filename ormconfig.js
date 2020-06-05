@@ -1,3 +1,5 @@
+
+const migrationsDir = 'dist/migrations';
 const config = {
     type: "mysql",
     host: "localhost",
@@ -8,7 +10,12 @@ const config = {
     entities: [
         "dist/**/*.entity{.ts,.js}"
     ],
-    synchronize: true
+    synchronize: false,
+    migrations: [migrationsDir + "/*.js"],
+    cli: { 
+        "migrationsDir": migrationsDir,
+        "entitiesDir": "dist/"
+     }
 }
 
 module.exports = config;
