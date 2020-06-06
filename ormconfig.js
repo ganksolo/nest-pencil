@@ -1,5 +1,4 @@
 
-const migrationsDir = 'dist/migrations';
 const config = {
     type: "mysql",
     host: "localhost",
@@ -11,11 +10,11 @@ const config = {
         "dist/**/*.entity{.ts,.js}"
     ],
     synchronize: false,
-    migrations: [migrationsDir + "/*.js"],
-    cli: { 
-        "migrationsDir": migrationsDir,
-        "entitiesDir": "dist/"
-     }
+    migrations: ["dist/migrations/*.js"],     // 加载迁移所指定的目录
+    cli: {
+        "migrationsDir": "src/migrations",     // 创建新的迁移目录
+    }
+
 }
 
 module.exports = config;

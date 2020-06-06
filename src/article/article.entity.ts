@@ -10,6 +10,7 @@ import {
 
 @Entity('article')
 export class ArticleEntity {
+    
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -18,5 +19,8 @@ export class ArticleEntity {
 
     @Column()
     title: string;
+
+    @Column({ default: '' })
+    description: string;
 
 }
