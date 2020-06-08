@@ -9,7 +9,7 @@ const config = {
     entities: [
         "dist/**/*.entity{.ts,.js}"
     ],
-    synchronize: false,
+    synchronize: true,
     migrations: ["dist/migrations/*.js"],     // 加载迁移所指定的目录
     cli: {
         "migrationsDir": "src/migrations",     // 创建新的迁移目录
