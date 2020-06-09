@@ -20,7 +20,7 @@ export class AppController {
   @Post('auth/login')
   // 仅当用户通过验证后，才会调用路由处理程序
   async login(@Request() req) {
-    return this.authService.login(req.user);
+    return this.authService.generateToken(req.user);
   }
 
   @UseGuards(JwtAuthGuard)

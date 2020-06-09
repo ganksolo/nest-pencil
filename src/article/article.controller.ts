@@ -1,23 +1,37 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Body, UseGuards, Request, Query, Param } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
-@Controller()
+@Controller('articles')
 export class ArticleController {
     constructor(private articleService: ArticleService ) {}
     
-    @Get('article')
-    findAll() {
-        return 'this is article controller'
+    @Get()
+    async findAll(@Query() query) {
+        return await this.articleService.findAll(query);
     }
 
-    @Post('articles')
-    create(@Body() articleData: CreateArticleDto) {
-        console.log(articleData);
-        
-        const userId = 2;
+    @Get(':slug')
+    async findOne(@Param('slug') slug) {
+        return await this.articleService.findOne({slug});
+    }
 
-        return this.articleService.create(userId, articleData);
+    @Put(':slug')
+    async update(@Param('slug') slug, @Body() data: CreateArticleDto) {
+        return await this.articleService.update(slug, data);
+    }
 
+    @UseGuards(JwtAuthGuard)
+    @Delete(':slug')
+    async delete(@Param('slug') slug) {
+        return await this.articleService.delete(slug);
+    }
+
+
+    @UseGuards(JwtAuthGuard)
+    @Post()
+    async create(@Request() req, @Body() articleData: CreateArticleDto) {
+        return await this.articleService.create(req.user.userInfo?.id, articleData);
     }
 }
