@@ -29,7 +29,6 @@ export class UserService {
 
     async findById(id: number): Promise<UserRO> {
         const user = await this.userRepository.findOne(id);
-        console.log(user)
         return this.buildUserRO(user)
     }
 

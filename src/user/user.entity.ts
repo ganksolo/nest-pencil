@@ -34,7 +34,7 @@ export class UserEntity {
     @Column()
     password: string;
 
-    @Column()
+    @Column({default: ''})
     birthplace: string;
 
     @BeforeInsert()
