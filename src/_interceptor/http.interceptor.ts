@@ -16,9 +16,9 @@ export class HttpInterceptor implements NestInterceptor {
 		.pipe(
 			map(data => {
 				return {
-				data,
-				code: 0,
-				msg: '请求成功！'
+					code: 200,
+					data,
+					msg: '请求成功！'
 				}
 			})
 		)

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as argon2 from 'argon2';
 import { UserData } from '../user/user.interface';
@@ -20,7 +20,7 @@ export class AuthService {
         return null;
     }
 
-    async generateToken(user: any) {
+    async generateToken(user) {
         const payload = user
         return {
             access_token: this.jwtService.sign(payload)
