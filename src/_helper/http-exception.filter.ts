@@ -24,10 +24,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
 			.status(status)
 			.json(errorMsg);
 
-		// const status =
-		// 	exception instanceof HttpException
-		// 		? exception.getStatus()
-		// 		: HttpStatus.INTERNAL_SERVER_ERROR;
 		// // 设置返回的状态码、请求头、发送错误信息
 		// response.status(status);
 		// response.header('Content-Type', 'application/json; charset=utf-8');
