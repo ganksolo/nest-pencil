@@ -17,6 +17,7 @@ export class ArticleController {
         return await this.articleService.findOne({slug});
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':slug')
     async update(@Param('slug') slug, @Body() data: CreateArticleDto) {
         return await this.articleService.update(slug, data);
@@ -32,6 +33,6 @@ export class ArticleController {
     @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Request() req, @Body() articleData: CreateArticleDto) {
-        return await this.articleService.create(req.user.userInfo?.id, articleData);
+        return await this.articleService.create(req.user?.id, articleData);
     }
 }
