@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult } from 'typeorm';
 import { UserEntity } from './user.entity';
-import { CreateUserDto } from './dto';
+import { CreateUserDto, UpdateUserDto } from './dto';
 import { UserRO, UserData } from './user.interface';
 
 @Injectable()
@@ -29,6 +29,11 @@ export class UserService {
 
     async findById(id: number): Promise<UserRO> {
         const user = await this.userRepository.findOne(id);
+
+        if(!user) {
+            throw new HttpException({message: '用户不存在'}, HttpStatus.NOT_FOUND)
+        }
+
         return this.buildUserRO(user)
     }
 
@@ -42,6 +47,13 @@ export class UserService {
 
     async delete(email: string): Promise<DeleteResult> {
         return await this.userRepository.delete({ email })
+    }
+
+    async update(id: string, userData: UpdateUserDto): Promise<UserRO> {
+        const toUpdate = await this.userRepository.findOne(id);
+        const updated = Object.assign(toUpdate, userData);
+        const user = await this.userRepository.save(updated);
+        return this.buildUserRO(user)
     }
 
     async create(dto: CreateUserDto): Promise<UserRO> {

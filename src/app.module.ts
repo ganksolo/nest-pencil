@@ -7,15 +7,15 @@ import { Connection } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ArticleModule } from './article/article.module';
 @Module({
-  imports: [
-    TypeOrmModule.forRoot(),
-    UserModule,
-    AuthModule,
-    ArticleModule
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        TypeOrmModule.forRoot(),
+        UserModule,
+        AuthModule,
+        ArticleModule
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {
-  constructor(private connection: Connection) {}
+    constructor(private connection: Connection) {}
 }
