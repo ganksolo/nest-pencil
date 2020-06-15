@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DeleteResult } from 'typeorm';
+import { Repository, DeleteResult, getRepository } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { UserRO, UserData } from './user.interface';
@@ -23,8 +23,20 @@ export class UserService {
         return { user: userRO }
     }
 
-    async findAll(): Promise<UserEntity[]> {
-        return await this.userRepository.find();
+    async findAll(query): Promise<UserEntity[] | UserRO> {
+        let user, result;
+        if(query) {
+            if ('email' in query) {
+                user = await this.userRepository.findOne({ email: query.email });
+            }
+            if ('username' in query) {
+                user = await this.userRepository.findOne({ username: query.username });
+            }
+            result = this.buildUserRO(user);
+        } else {
+            result = await this.userRepository.find()
+        }
+        return result;
     }
 
     async findById(id: number): Promise<UserRO> {
